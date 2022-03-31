@@ -1,0 +1,102 @@
+{
+    "name": "velocity-installer",
+    "productName": "Velocity Installer",
+    "version": "1.0.0",
+    "description": "My Electron application description",
+    "main": "src/index.js",
+    "scripts": {
+        "start": "concurrently \"npm:svelte-dev\" \"electron-forge start\"",
+        "package": "electron-forge package",
+        "make": "electron-forge make",
+        "publish": "electron-forge publish",
+        "svelte-build": "rollup -c",
+        "svelte-dev": "rollup -c -w",
+        "svelte-start": "sirv public",
+        "dist-mac": "npx electron-builder -m",
+        "dist-win": "npx electron-builder --ia32 --x64 -w portable"
+    },
+    "keywords": [],
+    "author": {
+        "name": "TheCommieAxolotl"
+    },
+    "license": "MIT",
+    "config": {
+        "forge": {
+            "packagerConfig": {},
+            "makers": [
+                {
+                    "name": "@electron-forge/maker-squirrel",
+                    "config": {
+                        "name": "velocity_installer"
+                    }
+                },
+                {
+                    "name": "@electron-forge/maker-zip",
+                    "platforms": [
+                        "darwin"
+                    ]
+                },
+                {
+                    "name": "@electron-forge/maker-deb",
+                    "config": {}
+                },
+                {
+                    "name": "@electron-forge/maker-rpm",
+                    "config": {}
+                }
+            ]
+        }
+    },
+    "dependencies": {
+        "@electron/remote": "^2.0.8",
+        "concurrently": "^7.0.0",
+        "electron-squirrel-startup": "^1.0.0",
+        "sirv-cli": "^2.0.0",
+        "svelte": "^3.0.0",
+        "svelte-spa-router": "^3.2.0"
+    },
+    "devDependencies": {
+        "@electron-forge/cli": "^6.0.0-beta.63",
+        "@electron-forge/maker-deb": "^6.0.0-beta.63",
+        "@electron-forge/maker-rpm": "^6.0.0-beta.63",
+        "@electron-forge/maker-squirrel": "^6.0.0-beta.63",
+        "@electron-forge/maker-zip": "^6.0.0-beta.63",
+        "@rollup/plugin-commonjs": "^17.0.0",
+        "@rollup/plugin-node-resolve": "^11.0.0",
+        "electron": "17.2.0",
+        "electron-reload": "^2.0.0-alpha.1",
+        "rollup": "^2.3.4",
+        "rollup-plugin-css-only": "^3.1.0",
+        "rollup-plugin-livereload": "^2.0.0",
+        "rollup-plugin-svelte": "^7.0.0",
+        "rollup-plugin-terser": "^7.0.0"
+    },
+    "build": {
+        "appId": "app.Velocity.Installer",
+        "productName": "Velocity Installer",
+        "win": {
+            "artifactName": "${productName}-Windows.${ext}",
+            "icon": "assets/Velocity.ico",
+            "target": {
+                "target": "portable",
+                "arch": [
+                    "ia32"
+                ]
+            }
+        },
+        "portable": {
+            "requestExecutionLevel": "user",
+            "useZip": true
+        },
+        "mac": {
+            "artifactName": "${productName}-Mac.${ext}",
+            "icon": "assets/Velocity.icns",
+            "target": {
+                "target": "zip",
+                "arch": [
+                    "x64"
+                ]
+            }
+        }
+    }
+}

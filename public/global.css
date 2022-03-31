@@ -1,0 +1,196 @@
+@import "https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap";
+:root {
+    --primary: #040404;
+    --secondary: #333333;
+    --tertiary: #2b2b2e;
+    --bgColor: #16133c;
+    --accent: #2d3aaf;
+    --accentGlow: #2f3dbb;
+    --linkAccent: #4653ce;
+    --text: rgb(204, 204, 204);
+}
+
+html {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    background-image: linear-gradient(10deg, #040404, #16133c);
+    color: var(--text);
+    padding: 8px 20px;
+    margin: 0;
+    width: 100%;
+    height: 100%;
+    font-family: Inter, SF Pro Display, Arial, Helvetica, -apple-system, sans-serif;
+}
+
+a {
+    color: rgb(0, 100, 200);
+    text-decoration: none;
+}
+
+a:visited {
+    color: rgb(0, 80, 160);
+}
+
+h1 {
+    margin-block: 5px 10px;
+}
+
+label {
+    display: block;
+}
+
+input,
+button,
+select,
+textarea {
+    font-family: inherit;
+    font-size: inherit;
+    -webkit-padding: 0.4em 0;
+    padding: 0.4em;
+    margin: 0 0 0.5em 0;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    border-radius: 2px;
+}
+
+input:disabled {
+    color: #ccc;
+}
+
+button {
+    gap: 5px;
+    display: flex;
+    outline: none;
+    font-size: 14px;
+    padding: 12px 14px;
+    width: fit-content;
+    border-radius: 4px;
+    height: fit-content;
+    transition: all 0.2s ease;
+    color: rgb(165, 165, 165);
+    cursor: pointer;
+}
+
+button.lookVibrant {
+    border: 1px solid rgb(255, 255, 255, 0.1);
+    background-color: rgb(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+}
+
+button.lookFill {
+    border: 1px solid rgb(255, 255, 255, 0.1);
+    background-color: rgb(53, 80, 236);
+    color: rgb(233, 233, 233);
+}
+
+button.small {
+    padding: 6px 8px;
+}
+
+button.lookFill:disabled {
+    background-color: rgb(28, 32, 54, 0.836);
+    color: rgb(255, 255, 255, 0.212);
+}
+
+footer {
+    width: 100%;
+    height: 60px;
+    display: flex;
+    position: absolute;
+    align-items: center;
+    justify-content: center;
+    bottom: 0;
+    left: 0;
+    gap: 5px;
+}
+
+button:hover,
+button:not(:disabled):active {
+    color: rgb(218, 218, 218);
+}
+
+button:disabled {
+    pointer-events: none;
+    color: rgb(255, 255, 255, 0.212);
+}
+
+:focus {
+    outline: none;
+}
+
+#status.ok {
+    color: #7feb7f;
+}
+
+#status.questionable {
+    color: #ebce7f;
+}
+
+#status.bad {
+    color: #eb7f7f;
+}
+
+#status svg {
+    margin-right: 5px;
+}
+
+@keyframes out {
+    from {
+        transform: translateY(0);
+        opacity: 1;
+    }
+
+    to {
+        transform: translateY(100vh);
+        opacity: 0;
+    }
+}
+
+#Loader.out {
+    animation: out 350ms ease-in-out forwards;
+}
+
+::selection {
+    background-color: rgb(43, 110, 255, 0.45);
+}
+
+span {
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background-color: rgba(255, 255, 255, 0.05);
+    padding: 6px 8px;
+    border-radius: 4px;
+    width: fit-content;
+    user-select: all;
+    font-size: 13px;
+}
+
+main {
+    display: flex;
+    margin-top: 30px;
+    flex-direction: column;
+    align-items: center;
+    position: absolute;
+    width: calc(100% - 20px);
+    transform: translateX(-10px);
+}
+
+h1 {
+    color: var(--linkAccent);
+    font-size: 45px;
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+section {
+    scroll-behavior: smooth;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
