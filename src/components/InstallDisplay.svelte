@@ -1,5 +1,4 @@
 <script>
-    const { app } = require("@electron/remote")
     const path = require("path")
     import TextLogger from "./TextLogger.svelte"
     import { finished } from "../stores/path"

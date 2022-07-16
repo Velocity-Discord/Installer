@@ -1,5 +1,5 @@
 <script>
-    const remote = require("@electron/remote")
+    import { ipcRenderer } from "electron";
     import { push, pop, location } from "svelte-spa-router"
     import {onMount} from "svelte";
 	import { state, forward, backward, next, action } from "../stores/locations"
@@ -7,7 +7,7 @@
     async function goNext() {
         state.direction = 1;
         if ($next) push($next);
-        else remote.app.exit();
+        else ipcRenderer.invoke("kill")
     }
     function goBack() {
         state.direction = -1;

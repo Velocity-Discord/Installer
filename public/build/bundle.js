@@ -1,7 +1,12 @@
 
 (function(l, r) { if (!l || l.getElementById('livereloadscript')) return; r = l.createElement('script'); r.async = 1; r.src = '//' + (self.location.host || 'localhost').split(':')[0] + ':35729/livereload.js?snipver=1'; r.id = 'livereloadscript'; l.getElementsByTagName('head')[0].appendChild(r) })(self.document);
-var app = (function () {
+var app = (function (fs$2, path$3) {
     'use strict';
+
+    function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
+
+    var fs__default = /*#__PURE__*/_interopDefaultLegacy(fs$2);
+    var path__default = /*#__PURE__*/_interopDefaultLegacy(path$3);
 
     function noop() { }
     const identity = x => x;
@@ -946,6 +951,25 @@ var app = (function () {
     		});
     	}
     }
+
+    const pathFile = path__default["default"].join(__dirname, 'path.txt');
+
+    function getElectronPath () {
+      let executablePath;
+      if (fs__default["default"].existsSync(pathFile)) {
+        executablePath = fs__default["default"].readFileSync(pathFile, 'utf-8');
+      }
+      if (process.env.ELECTRON_OVERRIDE_DIST_PATH) {
+        return path__default["default"].join(process.env.ELECTRON_OVERRIDE_DIST_PATH, executablePath || 'electron');
+      }
+      if (executablePath) {
+        return path__default["default"].join(__dirname, 'dist', executablePath);
+      } else {
+        throw new Error('Electron failed to install correctly, please delete node_modules/electron and try installing again');
+      }
+    }
+
+    var electron = getElectronPath();
 
     /**
      * @typedef {Object} WrappedComponent Object returned by the `wrap` method
@@ -2105,7 +2129,7 @@ var app = (function () {
     		c: function create() {
     			style = element("style");
     			style.textContent = ".lookFill.small {\n            background: #c74545;\n        }";
-    			add_location(style, file$7, 23, 4, 719);
+    			add_location(style, file$7, 23, 4, 724);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, style, anchor);
@@ -2155,13 +2179,13 @@ var app = (function () {
     			attr_dev(button0, "class", "lookVibrant small");
     			attr_dev(button0, "id", "backPage");
     			button0.disabled = button0_disabled_value = !/*$backward*/ ctx[0];
-    			add_location(button0, file$7, 18, 4, 474);
+    			add_location(button0, file$7, 18, 4, 479);
     			attr_dev(button1, "class", "lookFill small");
     			attr_dev(button1, "id", "nextPage");
     			button1.disabled = button1_disabled_value = !/*$forward*/ ctx[1];
-    			add_location(button1, file$7, 19, 1, 577);
+    			add_location(button1, file$7, 19, 1, 582);
     			attr_dev(footer, "class", "footer");
-    			add_location(footer, file$7, 17, 0, 446);
+    			add_location(footer, file$7, 17, 0, 451);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -2246,11 +2270,10 @@ var app = (function () {
     	component_subscribe($$self, action, $$value => $$invalidate(2, $action = $$value));
     	let { $$slots: slots = {}, $$scope } = $$props;
     	validate_slots('Footer', slots, []);
-    	const remote = require("@electron/remote");
 
     	async function goNext() {
     		state.direction = 1;
-    		if ($next) push($next); else remote.app.exit();
+    		if ($next) push($next); else electron.ipcRenderer.invoke("kill");
     	}
 
     	function goBack() {
@@ -2265,7 +2288,7 @@ var app = (function () {
     	});
 
     	$$self.$capture_state = () => ({
-    		remote,
+    		ipcRenderer: electron.ipcRenderer,
     		push,
     		pop,
     		location: location$1,
@@ -2314,19 +2337,18 @@ var app = (function () {
         type.set([]);
     }
 
-    const { ipcRenderer } = require("electron");
-    require("@electron/remote");
+    const { ipcRenderer: ipcRenderer$1 } = require("electron");
     const fs$1 = require("fs");
-    const path$1 = require("path");
+    const path$2 = require("path");
 
     let appPath;
 
     async function getPath({ sprops }) {
-        const d = await ipcRenderer.invoke("getpath");
+        const d = await ipcRenderer$1.invoke("getpath");
         if (d.canceled || !d.filePaths[0]) return;
 
         let proposedPath = d.filePaths[0];
-        const selected = path$1.basename(proposedPath);
+        const selected = path$2.basename(proposedPath);
         let channelName;
         if (proposedPath.toLowerCase().includes("canary")) channelName = "Discord Canary";
         else if (proposedPath.toLowerCase().includes("ptb")) channelName = "Discord PTB";
@@ -2337,19 +2359,19 @@ var app = (function () {
             if (isBaseDir) {
                 const version = fs$1
                     .readdirSync(proposedPath)
-                    .filter((f) => fs$1.lstatSync(path$1.join(proposedPath, f)).isDirectory() && f.split(".").length > 1)
+                    .filter((f) => fs$1.lstatSync(path$2.join(proposedPath, f)).isDirectory() && f.split(".").length > 1)
                     .sort()
                     .reverse()[0];
                 if (!version) return "";
-                appPath = path$1.join(proposedPath, version, "resources");
-            } else if (selected.startsWith("app-") && selected.split(".").length > 2) appPath = path$1.join(proposedPath, "resources");
+                appPath = path$2.join(proposedPath, version, "resources");
+            } else if (selected.startsWith("app-") && selected.split(".").length > 2) appPath = path$2.join(proposedPath, "resources");
             else if (selected === "resources") appPath = proposedPath;
             else appPath = proposedPath;
         }
 
         if (process.platform == "darwin") {
-            if (selected === `${channelName}.app`) appPath = path$1.join(proposedPath, "Contents", "Resources");
-            else if (selected === "Contents") appPath = path$1.join(proposedPath, "Resources");
+            if (selected === `${channelName}.app`) appPath = path$2.join(proposedPath, "Contents", "Resources");
+            else if (selected === "Contents") appPath = path$2.join(proposedPath, "Resources");
             else if (selected === "Resources") appPath = proposedPath;
             else appPath = proposedPath;
         } else appPath = proposedPath;
@@ -2553,14 +2575,14 @@ var app = (function () {
     			t4 = text(/*$savedPath*/ ctx[1]);
     			t5 = space();
     			create_component(statuslabel.$$.fragment);
-    			add_location(h1, file$5, 59, 1, 1816);
+    			add_location(h1, file$5, 55, 1, 1728);
     			attr_dev(button, "class", "lookVibrant");
     			attr_dev(button, "id", "browseBtn");
-    			add_location(button, file$5, 61, 1, 1844);
+    			add_location(button, file$5, 57, 1, 1756);
     			attr_dev(span, "class", "path");
     			set_style(span, "display", "none");
-    			add_location(span, file$5, 62, 1, 1939);
-    			add_location(main, file$5, 58, 0, 1765);
+    			add_location(span, file$5, 58, 1, 1851);
+    			add_location(main, file$5, 54, 0, 1677);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -2632,9 +2654,6 @@ var app = (function () {
     	component_subscribe($$self, savedPath, $$value => $$invalidate(1, $savedPath = $$value));
     	let { $$slots: slots = {}, $$scope } = $$props;
     	validate_slots('_1', slots, []);
-    	const fs = require("fs");
-    	const path = require("path");
-    	const { app } = require("@electron/remote");
     	let appPath;
 
     	onMount(() => {
@@ -2665,7 +2684,7 @@ var app = (function () {
     		forward.set(true);
     		clearAllLogs(fileLogs);
     		logNewLine(fileLogs, path.join(appPath, "app/"));
-    		logNewLine(fileLogs, path.join(app.getPath("appData"), "Velocity/"));
+    		logNewLine(fileLogs, path.join(await ipcRenderer.invoke("getAppPath"), "Velocity/"));
     	}
 
     	const writable_props = [];
@@ -2675,9 +2694,6 @@ var app = (function () {
     	});
 
     	$$self.$capture_state = () => ({
-    		fs,
-    		path,
-    		app,
     		fileLogs,
     		logNewLine,
     		clearAllLogs,
@@ -2758,7 +2774,7 @@ var app = (function () {
     	let input;
     	let t13;
     	let svg;
-    	let path_1;
+    	let path;
     	let t14;
     	let label0;
     	let main_intro;
@@ -2801,60 +2817,60 @@ var app = (function () {
     			input = element("input");
     			t13 = space();
     			svg = svg_element("svg");
-    			path_1 = svg_element("path");
+    			path = svg_element("path");
     			t14 = space();
     			label0 = element("label");
     			label0.textContent = "I Accept the License";
     			attr_dev(p0, "class", "head svelte-3ham2m");
-    			add_location(p0, file$4, 33, 1, 768);
+    			add_location(p0, file$4, 30, 1, 709);
     			attr_dev(br0, "class", "svelte-3ham2m");
-    			add_location(br0, file$4, 37, 15, 829);
+    			add_location(br0, file$4, 34, 15, 770);
     			attr_dev(br1, "class", "svelte-3ham2m");
-    			add_location(br1, file$4, 37, 20, 834);
+    			add_location(br1, file$4, 34, 20, 775);
     			attr_dev(br2, "class", "svelte-3ham2m");
-    			add_location(br2, file$4, 39, 22, 862);
+    			add_location(br2, file$4, 36, 22, 803);
     			attr_dev(br3, "class", "svelte-3ham2m");
-    			add_location(br3, file$4, 39, 27, 867);
+    			add_location(br3, file$4, 36, 27, 808);
     			attr_dev(br4, "class", "svelte-3ham2m");
-    			add_location(br4, file$4, 46, 61, 1325);
+    			add_location(br4, file$4, 43, 61, 1266);
     			attr_dev(br5, "class", "svelte-3ham2m");
-    			add_location(br5, file$4, 46, 66, 1330);
+    			add_location(br5, file$4, 43, 66, 1271);
     			attr_dev(br6, "class", "svelte-3ham2m");
-    			add_location(br6, file$4, 49, 52, 1470);
+    			add_location(br6, file$4, 46, 52, 1411);
     			attr_dev(br7, "class", "svelte-3ham2m");
-    			add_location(br7, file$4, 49, 57, 1475);
+    			add_location(br7, file$4, 46, 57, 1416);
     			attr_dev(br8, "class", "svelte-3ham2m");
-    			add_location(br8, file$4, 57, 14, 1964);
+    			add_location(br8, file$4, 54, 14, 1905);
     			attr_dev(br9, "class", "svelte-3ham2m");
-    			add_location(br9, file$4, 57, 19, 1969);
+    			add_location(br9, file$4, 54, 19, 1910);
     			attr_dev(p1, "class", "svelte-3ham2m");
-    			add_location(p1, file$4, 36, 2, 810);
+    			add_location(p1, file$4, 33, 2, 751);
     			attr_dev(section, "class", "svelte-3ham2m");
-    			add_location(section, file$4, 35, 1, 798);
+    			add_location(section, file$4, 32, 1, 739);
     			attr_dev(input, "type", "checkbox");
     			attr_dev(input, "name", "license");
     			attr_dev(input, "id", "license-check");
     			attr_dev(input, "class", "svelte-3ham2m");
-    			add_location(input, file$4, 65, 3, 2168);
-    			attr_dev(path_1, "fill", "currentColor");
-    			attr_dev(path_1, "d", "M 0 2 C -1 1 1 -1 2 0 L 12 10 C 13 11 11 13 10 12 M 2 12 C 1 13 -1 11 0 10 L 10 0 C 11 -1 13 1 12 2");
-    			attr_dev(path_1, "class", "svelte-3ham2m");
-    			add_location(path_1, file$4, 67, 4, 2376);
+    			add_location(input, file$4, 62, 3, 2109);
+    			attr_dev(path, "fill", "currentColor");
+    			attr_dev(path, "d", "M 0 2 C -1 1 1 -1 2 0 L 12 10 C 13 11 11 13 10 12 M 2 12 C 1 13 -1 11 0 10 L 10 0 C 11 -1 13 1 12 2");
+    			attr_dev(path, "class", "svelte-3ham2m");
+    			add_location(path, file$4, 64, 4, 2317);
     			attr_dev(svg, "viewBox", "-1 -1 13 13");
     			attr_dev(svg, "xmlns", "http://www.w3.org/2000/svg");
     			attr_dev(svg, "width", "10");
     			attr_dev(svg, "height", "10");
     			attr_dev(svg, "class", "svelte-3ham2m");
-    			add_location(svg, file$4, 66, 3, 2286);
+    			add_location(svg, file$4, 63, 3, 2227);
     			attr_dev(div, "class", "accept-inner svelte-3ham2m");
-    			add_location(div, file$4, 64, 2, 2138);
+    			add_location(div, file$4, 61, 2, 2079);
     			attr_dev(label0, "for", "license");
     			attr_dev(label0, "class", "svelte-3ham2m");
-    			add_location(label0, file$4, 70, 2, 2535);
+    			add_location(label0, file$4, 67, 2, 2476);
     			attr_dev(label1, "class", "accept-container svelte-3ham2m");
-    			add_location(label1, file$4, 63, 1, 2086);
+    			add_location(label1, file$4, 60, 1, 2027);
     			attr_dev(main, "class", "svelte-3ham2m");
-    			add_location(main, file$4, 32, 0, 717);
+    			add_location(main, file$4, 29, 0, 658);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -2893,7 +2909,7 @@ var app = (function () {
     			/*input_binding*/ ctx[5](input);
     			append_dev(div, t13);
     			append_dev(div, svg);
-    			append_dev(svg, path_1);
+    			append_dev(svg, path);
     			append_dev(label1, t14);
     			append_dev(label1, label0);
     			current = true;
@@ -2952,8 +2968,6 @@ var app = (function () {
     function instance$7($$self, $$props, $$invalidate) {
     	let { $$slots: slots = {}, $$scope } = $$props;
     	validate_slots('_2', slots, []);
-    	const fs = require("fs");
-    	const path = require("path");
     	let checkboxEle;
     	let checked = false;
 
@@ -2995,8 +3009,6 @@ var app = (function () {
     	}
 
     	$$self.$capture_state = () => ({
-    		fs,
-    		path,
     		pageSlide: page,
     		onMount,
     		forward,
@@ -3172,13 +3184,13 @@ var app = (function () {
 
     function get_each_context(ctx, list, i) {
     	const child_ctx = ctx.slice();
-    	child_ctx[7] = list[i];
+    	child_ctx[5] = list[i];
     	return child_ctx;
     }
 
-    // (19:8) {#each $value as log}
+    // (15:8) {#each $value as log}
     function create_each_block(ctx) {
-    	let t0_value = /*log*/ ctx[7] + "";
+    	let t0_value = /*log*/ ctx[5] + "";
     	let t0;
     	let t1;
     	let br0;
@@ -3191,9 +3203,9 @@ var app = (function () {
     			br0 = element("br");
     			br1 = element("br");
     			attr_dev(br0, "class", "svelte-17s0um5");
-    			add_location(br0, file$2, 20, 12, 465);
+    			add_location(br0, file$2, 16, 12, 350);
     			attr_dev(br1, "class", "svelte-17s0um5");
-    			add_location(br1, file$2, 20, 16, 469);
+    			add_location(br1, file$2, 16, 16, 354);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, t0, anchor);
@@ -3202,7 +3214,7 @@ var app = (function () {
     			insert_dev(target, br1, anchor);
     		},
     		p: function update(ctx, dirty) {
-    			if (dirty & /*$value*/ 8 && t0_value !== (t0_value = /*log*/ ctx[7] + "")) set_data_dev(t0, t0_value);
+    			if (dirty & /*$value*/ 8 && t0_value !== (t0_value = /*log*/ ctx[5] + "")) set_data_dev(t0, t0_value);
     		},
     		d: function destroy(detaching) {
     			if (detaching) detach_dev(t0);
@@ -3216,14 +3228,14 @@ var app = (function () {
     		block,
     		id: create_each_block.name,
     		type: "each",
-    		source: "(19:8) {#each $value as log}",
+    		source: "(15:8) {#each $value as log}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (55:0) {#if full}
+    // (51:0) {#if full}
     function create_if_block(ctx) {
     	let style;
 
@@ -3232,7 +3244,7 @@ var app = (function () {
     			style = element("style");
     			style.textContent = "section {\n        height: 290px !important;\n    }";
     			attr_dev(style, "class", "svelte-17s0um5");
-    			add_location(style, file$2, 55, 0, 1104);
+    			add_location(style, file$2, 51, 0, 989);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, style, anchor);
@@ -3246,7 +3258,7 @@ var app = (function () {
     		block,
     		id: create_if_block.name,
     		type: "if",
-    		source: "(55:0) {#if full}",
+    		source: "(51:0) {#if full}",
     		ctx
     	});
 
@@ -3299,13 +3311,13 @@ var app = (function () {
     			if (if_block) if_block.c();
     			if_block_anchor = empty();
     			attr_dev(br0, "class", "svelte-17s0um5");
-    			add_location(br0, file$2, 17, 8, 395);
+    			add_location(br0, file$2, 13, 8, 280);
     			attr_dev(br1, "class", "svelte-17s0um5");
-    			add_location(br1, file$2, 17, 13, 400);
+    			add_location(br1, file$2, 13, 13, 285);
     			attr_dev(p, "class", "svelte-17s0um5");
-    			add_location(p, file$2, 15, 4, 367);
+    			add_location(p, file$2, 11, 4, 252);
     			attr_dev(section, "class", "svelte-17s0um5");
-    			add_location(section, file$2, 14, 0, 353);
+    			add_location(section, file$2, 10, 0, 238);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -3407,14 +3419,12 @@ var app = (function () {
     	$$self.$$.on_destroy.push(() => $$unsubscribe_value());
     	let { $$slots: slots = {}, $$scope } = $$props;
     	validate_slots('TextLogger', slots, []);
-    	const { app } = require("@electron/remote");
     	const path = require("path");
     	let { value } = $$props;
     	validate_store(value, 'value');
     	$$subscribe_value();
     	let { title } = $$props;
     	let { full } = $$props;
-    	let dataPath = path.join(app.getPath("appData"), "Velocity");
     	const writable_props = ['value', 'title', 'full'];
 
     	Object.keys($$props).forEach(key => {
@@ -3428,7 +3438,6 @@ var app = (function () {
     	};
 
     	$$self.$capture_state = () => ({
-    		app,
     		path,
     		fileLogs,
     		installLogs,
@@ -3437,7 +3446,6 @@ var app = (function () {
     		value,
     		title,
     		full,
-    		dataPath,
     		$value
     	});
 
@@ -3445,7 +3453,6 @@ var app = (function () {
     		if ('value' in $$props) $$subscribe_value($$invalidate(0, value = $$props.value));
     		if ('title' in $$props) $$invalidate(1, title = $$props.title);
     		if ('full' in $$props) $$invalidate(2, full = $$props.full);
-    		if ('dataPath' in $$props) dataPath = $$props.dataPath;
     	};
 
     	if ($$props && "$$inject" in $$props) {
@@ -3569,7 +3576,6 @@ var app = (function () {
     	component_subscribe($$self, fileLogs, $$value => $$invalidate(0, $fileLogs = $$value));
     	let { $$slots: slots = {}, $$scope } = $$props;
     	validate_slots('FileDisplay', slots, []);
-    	const { app } = require("@electron/remote");
     	const path = require("path");
     	const writable_props = [];
 
@@ -3578,7 +3584,6 @@ var app = (function () {
     	});
 
     	$$self.$capture_state = () => ({
-    		app,
     		path,
     		TextLogger,
     		fileLogs,
@@ -3629,10 +3634,10 @@ var app = (function () {
     			t1 = text(/*$savedPath*/ ctx[0]);
     			t2 = space();
     			create_component(filedisplay.$$.fragment);
-    			add_location(span, file$1, 20, 62, 587);
+    			add_location(span, file$1, 17, 62, 528);
     			attr_dev(p, "class", "head svelte-xcnuy1");
-    			add_location(p, file$1, 20, 1, 526);
-    			add_location(main, file$1, 19, 0, 475);
+    			add_location(p, file$1, 17, 1, 467);
+    			add_location(main, file$1, 16, 0, 416);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -3692,8 +3697,6 @@ var app = (function () {
     	component_subscribe($$self, savedPath, $$value => $$invalidate(0, $savedPath = $$value));
     	let { $$slots: slots = {}, $$scope } = $$props;
     	validate_slots('_3', slots, []);
-    	const fs = require("fs");
-    	const path = require("path");
 
     	onMount(() => {
     		forward.set(true);
@@ -3710,8 +3713,6 @@ var app = (function () {
     	});
 
     	$$self.$capture_state = () => ({
-    		fs,
-    		path,
     		FileDisplay,
     		pageSlide: page,
     		onMount,
@@ -3796,7 +3797,6 @@ var app = (function () {
     function instance$2($$self, $$props, $$invalidate) {
     	let { $$slots: slots = {}, $$scope } = $$props;
     	validate_slots('InstallDisplay', slots, []);
-    	const { app } = require("@electron/remote");
     	const path = require("path");
     	const writable_props = [];
 
@@ -3805,7 +3805,6 @@ var app = (function () {
     	});
 
     	$$self.$capture_state = () => ({
-    		app,
     		path,
     		TextLogger,
     		finished,
@@ -3833,7 +3832,7 @@ var app = (function () {
     }
 
     const fs = require("fs");
-    const path = require("path");
+    const path$1 = require("path");
 
     const sleep = (time) => new Promise((resolve) => setTimeout(resolve, time));
 
@@ -3857,11 +3856,11 @@ var app = (function () {
         setTimeout(() => {
             logNewLine(installLogs, `\n\n Starting Install`);
 
-            let oldInstall = fs.existsSync(path.join(window.appPath, "app"));
+            let oldInstall = fs.existsSync(path$1.join(window.appPath, "app"));
             if (oldInstall) {
-                logNewLine(installLogs, `Old Client Mod Install detected ${window.appPath}/app`);
+                logNewLine(installLogs, `Old Client Modification detected ${window.appPath}/app`);
                 setTimeout(() => {
-                    logNewLine(installLogs, "Proceeding to rename dirs...");
+                    logNewLine(installLogs, "Proceeding to replace...");
                     progress.set(10);
                 }, 700);
             }
@@ -3889,7 +3888,7 @@ var app = (function () {
     		c: function create() {
     			main = element("main");
     			create_component(installdisplay.$$.fragment);
-    			add_location(main, file, 38, 0, 878);
+    			add_location(main, file, 35, 0, 819);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -3939,8 +3938,6 @@ var app = (function () {
     function instance$1($$self, $$props, $$invalidate) {
     	let { $$slots: slots = {}, $$scope } = $$props;
     	validate_slots('_4', slots, []);
-    	const fs = require("fs");
-    	const path = require("path");
 
     	onMount(() => {
     		forward.set(false);
@@ -3977,8 +3974,6 @@ var app = (function () {
     	});
 
     	$$self.$capture_state = () => ({
-    		fs,
-    		path,
     		InstallDisplay,
     		pageSlide: page,
     		onMount,
@@ -4147,5 +4142,5 @@ var app = (function () {
 
     return app;
 
-})();
+})(fs$2, path$3);
 //# sourceMappingURL=bundle.js.map

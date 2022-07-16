@@ -1,4 +1,4 @@
-const fs = require("fs")
+const fs = require("fs");
 const path = require("path");
 
 import { fileLogs, installLogs, logNewLine } from "../stores/logs";
@@ -16,9 +16,9 @@ async function waitUntil(condition) {
 
 export async function startInstall() {
     function killInstall(err) {
-        failed.set(true)
-        forward.set(true)
-        action.set("Exit")
+        failed.set(true);
+        forward.set(true);
+        action.set("Exit");
         logNewLine(installLogs, `❌ INSTALL FAILED: ${err}`);
     }
 
@@ -30,16 +30,16 @@ export async function startInstall() {
 
         let oldInstall = fs.existsSync(path.join(window.appPath, "app"));
         if (oldInstall) {
-            logNewLine(installLogs, `Old Client Mod Install detected ${window.appPath}/app`);
+            logNewLine(installLogs, `Old Client Modification detected ${window.appPath}/app`);
             setTimeout(() => {
-                logNewLine(installLogs, "Proceeding to rename dirs...");
+                logNewLine(installLogs, "Proceeding to replace...");
                 progress.set(10);
             }, 700);
         }
         setTimeout(() => {
             killInstall("Exited install with err code 0");
-            logNewLine(installLogs, "The Velocity Project is in Alpha Testing. \n Our Installer will not function until Public Beta Testing commences.")
-            logNewLine(installLogs, "Thank you for using Velocity.")
+            logNewLine(installLogs, "The Velocity Project is in Alpha Testing. \n Our Installer will not function until Public Beta Testing commences.");
+            logNewLine(installLogs, "Thank you for using Velocity.");
             progress.set(28);
         }, 1300);
     }, 500);

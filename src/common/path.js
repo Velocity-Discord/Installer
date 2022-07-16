@@ -1,12 +1,11 @@
 const { ipcRenderer } = require("electron");
-const { dialog } = require("@electron/remote");
 const fs = require("fs");
 const path = require("path");
 
 let appPath;
 
 export async function getPath({ sprops }) {
-    const statusProps = sprops
+    const statusProps = sprops;
     const d = await ipcRenderer.invoke("getpath");
     if (d.canceled || !d.filePaths[0]) return;
 
@@ -39,8 +38,7 @@ export async function getPath({ sprops }) {
         else appPath = proposedPath;
     } else appPath = proposedPath;
 
-    window.appPath = appPath
+    window.appPath = appPath;
 
     return appPath;
 }
-

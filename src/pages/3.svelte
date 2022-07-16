@@ -1,7 +1,4 @@
 <script>
-	const fs = require("fs");
-	const path = require("path");
-
 	import FileDisplay from "../components/FileDisplay.svelte"
 	import pageSlide from "../transitions/pageSlide.js"
 	import {onMount} from "svelte";

@@ -1,5 +1,4 @@
 <script>
-    const { app } = require("@electron/remote")
     const path = require("path")
     import { fileLogs, installLogs, logNewLine } from "../stores/logs"
     import ProgressBar from "./ProgressBar.svelte"
@@ -7,9 +6,6 @@
     export let value
     export let title
     export let full
-
-    let dataPath = path.join(app.getPath("appData"), "Velocity")
-
 </script>
 
 <section>

@@ -1,7 +1,4 @@
 <script>
-	const fs = require("fs");
-	const path = require("path");
-
 	import pageSlide from "../transitions/pageSlide.js"
 	import {onMount} from "svelte";
 	import { forward, backward, next, location, action } from "../stores/locations"
