@@ -2557,14 +2557,14 @@ var app = (function () {
     			t4 = text(/*$savedPath*/ ctx[1]);
     			t5 = space();
     			create_component(statuslabel.$$.fragment);
-    			add_location(h1, file$5, 60, 1, 2174);
+    			add_location(h1, file$5, 60, 1, 2231);
     			attr_dev(button, "class", "lookVibrant");
     			attr_dev(button, "id", "browseBtn");
-    			add_location(button, file$5, 62, 1, 2202);
+    			add_location(button, file$5, 62, 1, 2259);
     			attr_dev(span, "class", "path");
     			set_style(span, "display", "none");
-    			add_location(span, file$5, 63, 1, 2297);
-    			add_location(main, file$5, 59, 0, 2123);
+    			add_location(span, file$5, 63, 1, 2354);
+    			add_location(main, file$5, 59, 0, 2180);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -2651,7 +2651,7 @@ var app = (function () {
     		if ($savedPath) {
     			const pathEle = document.querySelector("span.path");
     			pathEle.setAttribute("style", "display: block;");
-    			if (appPath.includes("Discord") && appPath.includes("Resources")) $$invalidate(0, statusProps.status = "ok", statusProps); else if (appPath.includes("Discord") || appPath.includes("Resources")) $$invalidate(0, statusProps.status = "questionable", statusProps); else $$invalidate(0, statusProps.status = "bad", statusProps);
+    			if (appPath.includes("Discord") && appPath.toLowerCase().includes("resources")) $$invalidate(0, statusProps.status = "ok", statusProps); else if (appPath.includes("Discord") || appPath.toLowerCase().includes("resources")) $$invalidate(0, statusProps.status = "questionable", statusProps); else $$invalidate(0, statusProps.status = "bad", statusProps);
     			forward.set(true);
     		}
     	});
@@ -2663,7 +2663,7 @@ var app = (function () {
     		if (!appPath) return;
     		const pathEle = document.querySelector("span.path");
     		pathEle.setAttribute("style", "display: block;");
-    		if (appPath.includes("Discord") && appPath.includes("Resources")) $$invalidate(0, statusProps.status = "ok", statusProps); else if (appPath.includes("Discord") || appPath.includes("Resources")) $$invalidate(0, statusProps.status = "questionable", statusProps); else $$invalidate(0, statusProps.status = "bad", statusProps);
+    		if (appPath.includes("Discord") && appPath.toLowerCase().includes("resources")) $$invalidate(0, statusProps.status = "ok", statusProps); else if (appPath.includes("Discord") || appPath.toLowerCase().includes("resources")) $$invalidate(0, statusProps.status = "questionable", statusProps); else $$invalidate(0, statusProps.status = "bad", statusProps);
     		savedPath.set(appPath);
     		forward.set(true);
     		clearAllLogs(fileLogs);
@@ -3939,7 +3939,7 @@ var app = (function () {
 
                 await fsPromises.mkdir(path.join(window.appPath, "app"));
                 progress.set(50);
-                await fsPromises.writeFile(path.join(window.appPath, "app/index.js"), `require("${VelocityDiscordPath}")`);
+                await fsPromises.writeFile(path.join(window.appPath, "app/index.js"), `require("${VelocityDiscordPath.replace(/\\/g, "\\\\").replace(/"/g, '\\"')}");`);
                 progress.set(55);
                 await fsPromises.writeFile(path.join(window.appPath, "app/package.json"), `{"name":"velocity", "main":"./index.js"}`);
                 progress.set(60);

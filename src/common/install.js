@@ -131,7 +131,7 @@ export async function startInstall() {
 
             await fsPromises.mkdir(path.join(window.appPath, "app"));
             progress.set(50);
-            await fsPromises.writeFile(path.join(window.appPath, "app/index.js"), `require("${VelocityDiscordPath}")`);
+            await fsPromises.writeFile(path.join(window.appPath, "app/index.js"), `require("${VelocityDiscordPath.replace(/\\/g, "\\\\").replace(/"/g, '\\"')}");`);
             progress.set(55);
             await fsPromises.writeFile(path.join(window.appPath, "app/package.json"), `{"name":"velocity", "main":"./index.js"}`);
             progress.set(60);

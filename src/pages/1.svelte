@@ -23,8 +23,8 @@
 		if ($savedPath) {
 			const pathEle = document.querySelector("span.path");
 			pathEle.setAttribute("style", "display: block;");
-			if (appPath.includes("Discord") && appPath.includes("Resources")) statusProps.status = "ok";
-			else if (appPath.includes("Discord") || appPath.includes("Resources")) statusProps.status = "questionable";
+			if (appPath.includes("Discord") && appPath.toLowerCase().includes("resources")) statusProps.status = "ok";
+			else if (appPath.includes("Discord") || appPath.toLowerCase().includes("resources")) statusProps.status = "questionable";
 			else statusProps.status = "bad";
 			forward.set(true)
 		}
@@ -39,8 +39,8 @@
 		if (!appPath) return;
 		const pathEle = document.querySelector("span.path");
     	pathEle.setAttribute("style", "display: block;");
-		if (appPath.includes("Discord") && appPath.includes("Resources")) statusProps.status = "ok";
-		else if (appPath.includes("Discord") || appPath.includes("Resources")) statusProps.status = "questionable";
+	 	if (appPath.includes("Discord") && appPath.toLowerCase().includes("resources")) statusProps.status = "ok";
+		else if (appPath.includes("Discord") || appPath.toLowerCase().includes("resources")) statusProps.status = "questionable";
 		else statusProps.status = "bad";
 
 		savedPath.set(appPath)
