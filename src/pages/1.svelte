@@ -48,11 +48,13 @@
  
 		clearAllLogs(fileLogs)
 
-		logNewLine(fileLogs, path.join(appPath, "app/"))
-		logNewLine(fileLogs, path.join(await electron.ipcRenderer.invoke("getAppPath"), "Velocity/"))
+		logNewLine(fileLogs, path.join(appPath, "app/"));
+		logNewLine(fileLogs, path.join(appPath, "app/index.js"));
+		logNewLine(fileLogs, path.join(appPath, "app/package.json"));
+		logNewLine(fileLogs, path.join(await electron.ipcRenderer.invoke("getAppPath"), "VelocityDiscord/"));
+		logNewLine(fileLogs, path.join(await electron.ipcRenderer.invoke("getAppPath"), "VelocityDiscord/dist/velocity.asar"));
+		logNewLine(fileLogs, path.join(await electron.ipcRenderer.invoke("getAppPath"), "VelocityDiscord/package.json"));
 	}
-
-    
 </script>
 
 <main in:pageSlide out:pageSlide="{{out: true}}">

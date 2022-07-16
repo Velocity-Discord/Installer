@@ -2557,14 +2557,14 @@ var app = (function () {
     			t4 = text(/*$savedPath*/ ctx[1]);
     			t5 = space();
     			create_component(statuslabel.$$.fragment);
-    			add_location(h1, file$5, 58, 1, 1809);
+    			add_location(h1, file$5, 60, 1, 2174);
     			attr_dev(button, "class", "lookVibrant");
     			attr_dev(button, "id", "browseBtn");
-    			add_location(button, file$5, 60, 1, 1837);
+    			add_location(button, file$5, 62, 1, 2202);
     			attr_dev(span, "class", "path");
     			set_style(span, "display", "none");
-    			add_location(span, file$5, 61, 1, 1932);
-    			add_location(main, file$5, 57, 0, 1758);
+    			add_location(span, file$5, 63, 1, 2297);
+    			add_location(main, file$5, 59, 0, 2123);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -2668,7 +2668,11 @@ var app = (function () {
     		forward.set(true);
     		clearAllLogs(fileLogs);
     		logNewLine(fileLogs, path.join(appPath, "app/"));
-    		logNewLine(fileLogs, path.join(await electron.ipcRenderer.invoke("getAppPath"), "Velocity/"));
+    		logNewLine(fileLogs, path.join(appPath, "app/index.js"));
+    		logNewLine(fileLogs, path.join(appPath, "app/package.json"));
+    		logNewLine(fileLogs, path.join(await electron.ipcRenderer.invoke("getAppPath"), "VelocityDiscord/"));
+    		logNewLine(fileLogs, path.join(await electron.ipcRenderer.invoke("getAppPath"), "VelocityDiscord/dist/velocity.asar"));
+    		logNewLine(fileLogs, path.join(await electron.ipcRenderer.invoke("getAppPath"), "VelocityDiscord/package.json"));
     	}
 
     	const writable_props = [];
