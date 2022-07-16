@@ -11,13 +11,12 @@
 <section>
     <p>
         {title}
-        <br> <br>
+        <br><br>
         {#each $value as log}
             {log}
             <br><br>
         {/each}
-        <!-- {$value.join("\n")} -->
-    </p>
+        <div class="spacer"></div>
     <ProgressBar />
 </section>
 
@@ -34,6 +33,10 @@
         text-overflow: ellipsis;
         font-family: monospace;
         border-radius: 4px;
+    }
+
+    .spacer {
+        height: 20px;
     }
 
     ::-webkit-scrollbar {

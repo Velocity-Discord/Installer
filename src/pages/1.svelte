@@ -1,4 +1,7 @@
 <script>
+	const electron = require("electron");
+	const path = require("path");
+	
 	import { fileLogs, logNewLine, clearAllLogs } from "../stores/logs"
 	import { getPath } from "../common/path"
 	import pageSlide from "../transitions/pageSlide.js"
@@ -46,7 +49,7 @@
 		clearAllLogs(fileLogs)
 
 		logNewLine(fileLogs, path.join(appPath, "app/"))
-		logNewLine(fileLogs, path.join(await ipcRenderer.invoke("getAppPath"), "Velocity/"))
+		logNewLine(fileLogs, path.join(await electron.ipcRenderer.invoke("getAppPath"), "Velocity/"))
 	}
 
     

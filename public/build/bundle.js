@@ -2319,18 +2319,18 @@ var app = (function () {
         type.set([]);
     }
 
-    const { ipcRenderer: ipcRenderer$1 } = require("electron");
+    const { ipcRenderer } = require("electron");
     const fs$1 = require("fs");
-    const path$2 = require("path");
+    const path$1 = require("path");
 
     let appPath;
 
     async function getPath({ sprops }) {
-        const d = await ipcRenderer$1.invoke("getpath");
+        const d = await ipcRenderer.invoke("getpath");
         if (d.canceled || !d.filePaths[0]) return;
 
         let proposedPath = d.filePaths[0];
-        const selected = path$2.basename(proposedPath);
+        const selected = path$1.basename(proposedPath);
         let channelName;
         if (proposedPath.toLowerCase().includes("canary")) channelName = "Discord Canary";
         else if (proposedPath.toLowerCase().includes("ptb")) channelName = "Discord PTB";
@@ -2341,19 +2341,19 @@ var app = (function () {
             if (isBaseDir) {
                 const version = fs$1
                     .readdirSync(proposedPath)
-                    .filter((f) => fs$1.lstatSync(path$2.join(proposedPath, f)).isDirectory() && f.split(".").length > 1)
+                    .filter((f) => fs$1.lstatSync(path$1.join(proposedPath, f)).isDirectory() && f.split(".").length > 1)
                     .sort()
                     .reverse()[0];
                 if (!version) return "";
-                appPath = path$2.join(proposedPath, version, "resources");
-            } else if (selected.startsWith("app-") && selected.split(".").length > 2) appPath = path$2.join(proposedPath, "resources");
+                appPath = path$1.join(proposedPath, version, "resources");
+            } else if (selected.startsWith("app-") && selected.split(".").length > 2) appPath = path$1.join(proposedPath, "resources");
             else if (selected === "resources") appPath = proposedPath;
             else appPath = proposedPath;
         }
 
         if (process.platform == "darwin") {
-            if (selected === `${channelName}.app`) appPath = path$2.join(proposedPath, "Contents", "Resources");
-            else if (selected === "Contents") appPath = path$2.join(proposedPath, "Resources");
+            if (selected === `${channelName}.app`) appPath = path$1.join(proposedPath, "Contents", "Resources");
+            else if (selected === "Contents") appPath = path$1.join(proposedPath, "Resources");
             else if (selected === "Resources") appPath = proposedPath;
             else appPath = proposedPath;
         } else appPath = proposedPath;
@@ -2557,14 +2557,14 @@ var app = (function () {
     			t4 = text(/*$savedPath*/ ctx[1]);
     			t5 = space();
     			create_component(statuslabel.$$.fragment);
-    			add_location(h1, file$5, 55, 1, 1728);
+    			add_location(h1, file$5, 58, 1, 1809);
     			attr_dev(button, "class", "lookVibrant");
     			attr_dev(button, "id", "browseBtn");
-    			add_location(button, file$5, 57, 1, 1756);
+    			add_location(button, file$5, 60, 1, 1837);
     			attr_dev(span, "class", "path");
     			set_style(span, "display", "none");
-    			add_location(span, file$5, 58, 1, 1851);
-    			add_location(main, file$5, 54, 0, 1677);
+    			add_location(span, file$5, 61, 1, 1932);
+    			add_location(main, file$5, 57, 0, 1758);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -2636,6 +2636,8 @@ var app = (function () {
     	component_subscribe($$self, savedPath, $$value => $$invalidate(1, $savedPath = $$value));
     	let { $$slots: slots = {}, $$scope } = $$props;
     	validate_slots('_1', slots, []);
+    	const electron = require("electron");
+    	const path = require("path");
     	let appPath;
 
     	onMount(() => {
@@ -2666,7 +2668,7 @@ var app = (function () {
     		forward.set(true);
     		clearAllLogs(fileLogs);
     		logNewLine(fileLogs, path.join(appPath, "app/"));
-    		logNewLine(fileLogs, path.join(await ipcRenderer.invoke("getAppPath"), "Velocity/"));
+    		logNewLine(fileLogs, path.join(await electron.ipcRenderer.invoke("getAppPath"), "Velocity/"));
     	}
 
     	const writable_props = [];
@@ -2676,6 +2678,8 @@ var app = (function () {
     	});
 
     	$$self.$capture_state = () => ({
+    		electron,
+    		path,
     		fileLogs,
     		logNewLine,
     		clearAllLogs,
@@ -3184,10 +3188,10 @@ var app = (function () {
     			t1 = space();
     			br0 = element("br");
     			br1 = element("br");
-    			attr_dev(br0, "class", "svelte-17s0um5");
-    			add_location(br0, file$2, 16, 12, 350);
-    			attr_dev(br1, "class", "svelte-17s0um5");
-    			add_location(br1, file$2, 16, 16, 354);
+    			attr_dev(br0, "class", "svelte-1ij5xf");
+    			add_location(br0, file$2, 16, 12, 349);
+    			attr_dev(br1, "class", "svelte-1ij5xf");
+    			add_location(br1, file$2, 16, 16, 353);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, t0, anchor);
@@ -3217,7 +3221,7 @@ var app = (function () {
     	return block;
     }
 
-    // (51:0) {#if full}
+    // (54:0) {#if full}
     function create_if_block(ctx) {
     	let style;
 
@@ -3225,8 +3229,8 @@ var app = (function () {
     		c: function create() {
     			style = element("style");
     			style.textContent = "section {\n        height: 290px !important;\n    }";
-    			attr_dev(style, "class", "svelte-17s0um5");
-    			add_location(style, file$2, 51, 0, 989);
+    			attr_dev(style, "class", "svelte-1ij5xf");
+    			add_location(style, file$2, 54, 0, 1020);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, style, anchor);
@@ -3240,7 +3244,7 @@ var app = (function () {
     		block,
     		id: create_if_block.name,
     		type: "if",
-    		source: "(51:0) {#if full}",
+    		source: "(54:0) {#if full}",
     		ctx
     	});
 
@@ -3253,9 +3257,10 @@ var app = (function () {
     	let t0;
     	let t1;
     	let br0;
-    	let t2;
     	let br1;
+    	let t2;
     	let t3;
+    	let div;
     	let t4;
     	let progressbar;
     	let t5;
@@ -3279,26 +3284,29 @@ var app = (function () {
     			t0 = text(/*title*/ ctx[1]);
     			t1 = space();
     			br0 = element("br");
-    			t2 = space();
     			br1 = element("br");
-    			t3 = space();
+    			t2 = space();
 
     			for (let i = 0; i < each_blocks.length; i += 1) {
     				each_blocks[i].c();
     			}
 
+    			t3 = space();
+    			div = element("div");
     			t4 = space();
     			create_component(progressbar.$$.fragment);
     			t5 = space();
     			if (if_block) if_block.c();
     			if_block_anchor = empty();
-    			attr_dev(br0, "class", "svelte-17s0um5");
+    			attr_dev(br0, "class", "svelte-1ij5xf");
     			add_location(br0, file$2, 13, 8, 280);
-    			attr_dev(br1, "class", "svelte-17s0um5");
-    			add_location(br1, file$2, 13, 13, 285);
-    			attr_dev(p, "class", "svelte-17s0um5");
+    			attr_dev(br1, "class", "svelte-1ij5xf");
+    			add_location(br1, file$2, 13, 12, 284);
+    			attr_dev(p, "class", "svelte-1ij5xf");
     			add_location(p, file$2, 11, 4, 252);
-    			attr_dev(section, "class", "svelte-17s0um5");
+    			attr_dev(div, "class", "spacer svelte-1ij5xf");
+    			add_location(div, file$2, 18, 8, 382);
+    			attr_dev(section, "class", "svelte-1ij5xf");
     			add_location(section, file$2, 10, 0, 238);
     		},
     		l: function claim(nodes) {
@@ -3310,14 +3318,15 @@ var app = (function () {
     			append_dev(p, t0);
     			append_dev(p, t1);
     			append_dev(p, br0);
-    			append_dev(p, t2);
     			append_dev(p, br1);
-    			append_dev(p, t3);
+    			append_dev(p, t2);
 
     			for (let i = 0; i < each_blocks.length; i += 1) {
     				each_blocks[i].m(p, null);
     			}
 
+    			append_dev(p, t3);
+    			append_dev(section, div);
     			append_dev(section, t4);
     			mount_component(progressbar, section, null);
     			insert_dev(target, t5, anchor);
@@ -3341,7 +3350,7 @@ var app = (function () {
     					} else {
     						each_blocks[i] = create_each_block(child_ctx);
     						each_blocks[i].c();
-    						each_blocks[i].m(p, null);
+    						each_blocks[i].m(p, t3);
     					}
     				}
 
@@ -3597,10 +3606,7 @@ var app = (function () {
     function create_fragment$3(ctx) {
     	let main;
     	let p;
-    	let t0;
-    	let span;
     	let t1;
-    	let t2;
     	let filedisplay;
     	let main_intro;
     	let main_outro;
@@ -3611,12 +3617,9 @@ var app = (function () {
     		c: function create() {
     			main = element("main");
     			p = element("p");
-    			t0 = text("Are you sure you want to Install Velocity to ");
-    			span = element("span");
-    			t1 = text(/*$savedPath*/ ctx[0]);
-    			t2 = space();
+    			p.textContent = "Are you sure you want to Install Velocity?";
+    			t1 = space();
     			create_component(filedisplay.$$.fragment);
-    			add_location(span, file$1, 17, 62, 528);
     			attr_dev(p, "class", "head svelte-xcnuy1");
     			add_location(p, file$1, 17, 1, 467);
     			add_location(main, file$1, 16, 0, 416);
@@ -3627,16 +3630,11 @@ var app = (function () {
     		m: function mount(target, anchor) {
     			insert_dev(target, main, anchor);
     			append_dev(main, p);
-    			append_dev(p, t0);
-    			append_dev(p, span);
-    			append_dev(span, t1);
-    			append_dev(main, t2);
+    			append_dev(main, t1);
     			mount_component(filedisplay, main, null);
     			current = true;
     		},
-    		p: function update(ctx, [dirty]) {
-    			if (!current || dirty & /*$savedPath*/ 1) set_data_dev(t1, /*$savedPath*/ ctx[0]);
-    		},
+    		p: noop,
     		i: function intro(local) {
     			if (current) return;
     			transition_in(filedisplay.$$.fragment, local);
@@ -3674,9 +3672,6 @@ var app = (function () {
     }
 
     function instance$3($$self, $$props, $$invalidate) {
-    	let $savedPath;
-    	validate_store(savedPath, 'savedPath');
-    	component_subscribe($$self, savedPath, $$value => $$invalidate(0, $savedPath = $$value));
     	let { $$slots: slots = {}, $$scope } = $$props;
     	validate_slots('_3', slots, []);
 
@@ -3703,11 +3698,10 @@ var app = (function () {
     		next,
     		location,
     		action,
-    		savedPath,
-    		$savedPath
+    		savedPath
     	});
 
-    	return [$savedPath];
+    	return [];
     }
 
     class _3 extends SvelteComponentDev {
@@ -3813,8 +3807,12 @@ var app = (function () {
     	}
     }
 
-    const fs = require("fs");
-    const path$1 = require("path");
+    const fs = require("fs/promises");
+    const originalFs = require("fs");
+    const actualOriginalFs = require("original-fs").promises;
+    const path = require("path");
+    const https = require("https");
+    const electron = require("electron");
 
     const sleep = (time) => new Promise((resolve) => setTimeout(resolve, time));
 
@@ -3824,6 +3822,56 @@ var app = (function () {
         return item;
     }
 
+    const getAsarData = async () => {
+        return new Promise((resolve, reject) => {
+            let url = "https://raw.githubusercontent.com/Velocity-Discord/Velocity/main/dist/velocity.asar";
+            let body;
+
+            https.get(url, (res) => {
+                let rawData = "";
+
+                res.on("data", (chunk) => {
+                    rawData += chunk;
+                });
+
+                res.on("end", () => {
+                    body = rawData;
+
+                    resolve(body);
+                });
+
+                res.on("error", (err) => {
+                    reject(err);
+                });
+            });
+        });
+    };
+
+    const getPackageData = async () => {
+        return new Promise((resolve, reject) => {
+            let url = "https://raw.githubusercontent.com/Velocity-Discord/Velocity/main/package.json";
+            let body;
+
+            https.get(url, (res) => {
+                let rawData = "";
+
+                res.on("data", (chunk) => {
+                    rawData += chunk;
+                });
+
+                res.on("end", () => {
+                    body = rawData;
+
+                    resolve(body);
+                });
+
+                res.on("error", (err) => {
+                    reject(err);
+                });
+            });
+        });
+    };
+
     async function startInstall() {
         function killInstall(err) {
             failed.set(true);
@@ -3832,27 +3880,126 @@ var app = (function () {
             logNewLine(installLogs, `❌ INSTALL FAILED: ${err}`);
         }
 
+        function finishInstall() {
+            logNewLine(installLogs, "✅ Velocity successfully installed");
+            forward.set(true);
+            progress.set(100);
+            action.set("Exit");
+        }
+
         await waitUntil(() => window.appPath);
 
-        // Timeouts just make it look... better
-        setTimeout(() => {
-            logNewLine(installLogs, `\n\n Starting Install`);
+        logNewLine(installLogs, `\n\n Starting Install`);
 
-            let oldInstall = fs.existsSync(path$1.join(window.appPath, "app"));
-            if (oldInstall) {
+        let oldInstall = originalFs.existsSync(path.join(window.appPath, "app"));
+        if (oldInstall) {
+            try {
                 logNewLine(installLogs, `Old Client Modification detected ${window.appPath}/app`);
-                setTimeout(() => {
-                    logNewLine(installLogs, "Proceeding to replace...");
-                    progress.set(10);
-                }, 700);
+                logNewLine(installLogs, "Proceeding to replace...");
+                progress.set(10);
+
+                await fs.unlink(path.join(window.appPath, "app/index.js"));
+                await fs.unlink(path.join(window.appPath, "app/package.json"));
+                await fs.rmdir(path.join(window.appPath, "app"));
+
+                logNewLine(installLogs, "✅ Old Client Modification successfully removed");
+                logNewLine(installLogs, "Fetching latest remote package.json...");
+
+                const packageToWrite = await getPackageData();
+
+                logNewLine(installLogs, "✅ Remote package.json successfully fetched");
+                progress.set(20);
+                logNewLine(installLogs, "Fetching latest remote asar...");
+
+                const asarToWrite = await getAsarData();
+
+                logNewLine(installLogs, "✅ Remote package.json successfully fetched");
+                progress.set(25);
+                logNewLine(installLogs, "Writing package.json to disk");
+
+                if (!originalFs.existsSync(path.join(await electron.ipcRenderer.invoke("getAppPath"), "VelocityDiscord"))) {
+                    await fs.mkdir(path.join(await electron.ipcRenderer.invoke("getAppPath"), "VelocityDiscord"));
+                }
+                if (!originalFs.existsSync(path.join(await electron.ipcRenderer.invoke("getAppPath"), "VelocityDiscord", "dist"))) {
+                    await fs.mkdir(path.join(await electron.ipcRenderer.invoke("getAppPath"), "VelocityDiscord", "dist"));
+                }
+                await fs.writeFile(path.join(await electron.ipcRenderer.invoke("getAppPath"), "VelocityDiscord/package.json"), packageToWrite);
+
+                logNewLine(installLogs, "✅ package.json successfully written to disk");
+                progress.set(35);
+                logNewLine(installLogs, "Writing asar to disk");
+
+                await actualOriginalFs.writeFile(path.join(await electron.ipcRenderer.invoke("getAppPath"), "VelocityDiscord/dist/velocity.asar"), asarToWrite);
+
+                logNewLine(installLogs, "✅ asar successfully written to disk");
+                progress.set(45);
+
+                const VelocityDiscordPath = path.join(await electron.ipcRenderer.invoke("getAppPath"), "VelocityDiscord");
+
+                logNewLine(installLogs, "Creating files in Discord folder...");
+
+                await fs.mkdir(path.join(window.appPath, "app"));
+                progress.set(50);
+                await fs.writeFile(path.join(window.appPath, "app/index.js"), `require("${VelocityDiscordPath}")`);
+                progress.set(55);
+                await fs.writeFile(path.join(window.appPath, "app/package.json"), `{"name":"velocity", "main":"./index.js"}`);
+                progress.set(60);
+
+                finishInstall();
+            } catch (err) {
+                killInstall(err);
             }
-            setTimeout(() => {
-                killInstall("Exited install with err code 0");
-                logNewLine(installLogs, "The Velocity Project is in Alpha Testing. \n Our Installer will not function until Public Beta Testing commences.");
-                logNewLine(installLogs, "Thank you for using Velocity.");
-                progress.set(28);
-            }, 1300);
-        }, 500);
+        } else {
+            try {
+                progress.set(10);
+
+                logNewLine(installLogs, "Fetching latest remote package.json...");
+
+                const packageToWrite = await getPackageData();
+
+                logNewLine(installLogs, "✅ Remote package.json successfully fetched");
+                progress.set(20);
+                logNewLine(installLogs, "Fetching latest remote asar...");
+
+                const asarToWrite = await getAsarData();
+
+                logNewLine(installLogs, "✅ Remote package.json successfully fetched");
+                progress.set(25);
+                logNewLine(installLogs, "Writing package.json to disk");
+
+                if (!originalFs.existsSync(path.join(await electron.ipcRenderer.invoke("getAppPath"), "VelocityDiscord"))) {
+                    await fs.mkdir(path.join(await electron.ipcRenderer.invoke("getAppPath"), "VelocityDiscord"));
+                }
+                if (!originalFs.existsSync(path.join(await electron.ipcRenderer.invoke("getAppPath"), "VelocityDiscord", "dist"))) {
+                    await fs.mkdir(path.join(await electron.ipcRenderer.invoke("getAppPath"), "VelocityDiscord", "dist"));
+                }
+                await fs.writeFile(path.join(await electron.ipcRenderer.invoke("getAppPath"), "VelocityDiscord/package.json"), packageToWrite);
+
+                logNewLine(installLogs, "✅ package.json successfully written to disk");
+                progress.set(35);
+                logNewLine(installLogs, "Writing asar to disk");
+
+                await actualOriginalFs.writeFile(path.join(await electron.ipcRenderer.invoke("getAppPath"), "VelocityDiscord/dist/velocity.asar"), asarToWrite);
+
+                logNewLine(installLogs, "✅ asar successfully written to disk");
+                progress.set(45);
+
+                const VelocityDiscordPath = path.join(await electron.ipcRenderer.invoke("getAppPath"), "VelocityDiscord");
+
+                logNewLine(installLogs, "Creating files in Discord folder...");
+
+                await fs.mkdir(path.join(window.appPath, "app"));
+                progress.set(50);
+                await fs.writeFile(path.join(window.appPath, "app/index.js"), `require("${VelocityDiscordPath}")`);
+                progress.set(55);
+                await fs.writeFile(path.join(window.appPath, "app/package.json"), `{"name":"velocity", "main":"./index.js"}`);
+                progress.set(60);
+
+                finishInstall();
+            } catch (err) {
+                killInstall(err);
+            }
+        }
     }
 
     /* src/pages/4.svelte generated by Svelte v3.49.0 */

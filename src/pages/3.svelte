@@ -15,7 +15,7 @@
 </script>
 
 <main in:pageSlide out:pageSlide="{{out: true}}">
-	<p class="head">Are you sure you want to Install Velocity to <span>{$savedPath}</span></p>
+	<p class="head">Are you sure you want to Install Velocity?</p>
 
 	<FileDisplay />
 </main>
