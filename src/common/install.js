@@ -1,6 +1,6 @@
-const fs = require("fs/promises");
-const originalFs = require("fs");
-const actualOriginalFs = require("original-fs").promises;
+const fs = require("fs");
+const fsPromises = require("fs/promises");
+const originalFs = require("original-fs").promises;
 const path = require("path");
 const https = require("https");
 const electron = require("electron");
@@ -21,19 +21,16 @@ async function waitUntil(condition) {
 const getAsarData = async () => {
     return new Promise((resolve, reject) => {
         let url = "https://raw.githubusercontent.com/Velocity-Discord/Velocity/main/dist/velocity.asar";
-        let body;
+        let body = [];
 
         https.get(url, (res) => {
-            let rawData = "";
-
-            res.on("data", (chunk) => {
-                rawData += chunk;
+            res.on("data", (d) => {
+                body.push(d);
             });
 
             res.on("end", () => {
-                body = rawData;
-
-                resolve(body);
+                const data = Buffer.concat(body);
+                resolve(data);
             });
 
             res.on("error", (err) => {
@@ -87,16 +84,16 @@ export async function startInstall() {
 
     logNewLine(installLogs, `\n\n Starting Install`);
 
-    let oldInstall = originalFs.existsSync(path.join(window.appPath, "app"));
+    let oldInstall = fs.existsSync(path.join(window.appPath, "app"));
     if (oldInstall) {
         try {
             logNewLine(installLogs, `Old Client Modification detected ${window.appPath}/app`);
             logNewLine(installLogs, "Proceeding to replace...");
             progress.set(10);
 
-            await fs.unlink(path.join(window.appPath, "app/index.js"));
-            await fs.unlink(path.join(window.appPath, "app/package.json"));
-            await fs.rmdir(path.join(window.appPath, "app"));
+            await fsPromises.unlink(path.join(window.appPath, "app/index.js"));
+            await fsPromises.unlink(path.join(window.appPath, "app/package.json"));
+            await fsPromises.rmdir(path.join(window.appPath, "app"));
 
             logNewLine(installLogs, "✅ Old Client Modification successfully removed");
             logNewLine(installLogs, "Fetching latest remote package.json...");
@@ -107,25 +104,23 @@ export async function startInstall() {
             progress.set(20);
             logNewLine(installLogs, "Fetching latest remote asar...");
 
-            const asarToWrite = await getAsarData();
-
             logNewLine(installLogs, "✅ Remote package.json successfully fetched");
             progress.set(25);
             logNewLine(installLogs, "Writing package.json to disk");
 
-            if (!originalFs.existsSync(path.join(await electron.ipcRenderer.invoke("getAppPath"), "VelocityDiscord"))) {
-                await fs.mkdir(path.join(await electron.ipcRenderer.invoke("getAppPath"), "VelocityDiscord"));
+            if (!fs.existsSync(path.join(await electron.ipcRenderer.invoke("getAppPath"), "VelocityDiscord"))) {
+                await fsPromises.mkdir(path.join(await electron.ipcRenderer.invoke("getAppPath"), "VelocityDiscord"));
             }
-            if (!originalFs.existsSync(path.join(await electron.ipcRenderer.invoke("getAppPath"), "VelocityDiscord", "dist"))) {
-                await fs.mkdir(path.join(await electron.ipcRenderer.invoke("getAppPath"), "VelocityDiscord", "dist"));
+            if (!fs.existsSync(path.join(await electron.ipcRenderer.invoke("getAppPath"), "VelocityDiscord", "dist"))) {
+                await fsPromises.mkdir(path.join(await electron.ipcRenderer.invoke("getAppPath"), "VelocityDiscord", "dist"));
             }
-            await fs.writeFile(path.join(await electron.ipcRenderer.invoke("getAppPath"), "VelocityDiscord/package.json"), packageToWrite);
+            await fsPromises.writeFile(path.join(await electron.ipcRenderer.invoke("getAppPath"), "VelocityDiscord/package.json"), packageToWrite);
 
             logNewLine(installLogs, "✅ package.json successfully written to disk");
             progress.set(35);
             logNewLine(installLogs, "Writing asar to disk");
 
-            await actualOriginalFs.writeFile(path.join(await electron.ipcRenderer.invoke("getAppPath"), "VelocityDiscord/dist/velocity.asar"), asarToWrite);
+            await originalFs.writeFile(path.join(await electron.ipcRenderer.invoke("getAppPath"), "VelocityDiscord/dist/velocity.asar"), await getAsarData());
 
             logNewLine(installLogs, "✅ asar successfully written to disk");
             progress.set(45);
@@ -134,11 +129,11 @@ export async function startInstall() {
 
             logNewLine(installLogs, "Creating files in Discord folder...");
 
-            await fs.mkdir(path.join(window.appPath, "app"));
+            await fsPromises.mkdir(path.join(window.appPath, "app"));
             progress.set(50);
-            await fs.writeFile(path.join(window.appPath, "app/index.js"), `require("${VelocityDiscordPath}")`);
+            await fsPromises.writeFile(path.join(window.appPath, "app/index.js"), `require("${VelocityDiscordPath}")`);
             progress.set(55);
-            await fs.writeFile(path.join(window.appPath, "app/package.json"), `{"name":"velocity", "main":"./index.js"}`);
+            await fsPromises.writeFile(path.join(window.appPath, "app/package.json"), `{"name":"velocity", "main":"./index.js"}`);
             progress.set(60);
 
             finishInstall();
@@ -163,19 +158,19 @@ export async function startInstall() {
             progress.set(25);
             logNewLine(installLogs, "Writing package.json to disk");
 
-            if (!originalFs.existsSync(path.join(await electron.ipcRenderer.invoke("getAppPath"), "VelocityDiscord"))) {
-                await fs.mkdir(path.join(await electron.ipcRenderer.invoke("getAppPath"), "VelocityDiscord"));
+            if (!fs.existsSync(path.join(await electron.ipcRenderer.invoke("getAppPath"), "VelocityDiscord"))) {
+                await fsPromises.mkdir(path.join(await electron.ipcRenderer.invoke("getAppPath"), "VelocityDiscord"));
             }
-            if (!originalFs.existsSync(path.join(await electron.ipcRenderer.invoke("getAppPath"), "VelocityDiscord", "dist"))) {
-                await fs.mkdir(path.join(await electron.ipcRenderer.invoke("getAppPath"), "VelocityDiscord", "dist"));
+            if (!fs.existsSync(path.join(await electron.ipcRenderer.invoke("getAppPath"), "VelocityDiscord", "dist"))) {
+                await fsPromises.mkdir(path.join(await electron.ipcRenderer.invoke("getAppPath"), "VelocityDiscord", "dist"));
             }
-            await fs.writeFile(path.join(await electron.ipcRenderer.invoke("getAppPath"), "VelocityDiscord/package.json"), packageToWrite);
+            await fsPromises.writeFile(path.join(await electron.ipcRenderer.invoke("getAppPath"), "VelocityDiscord/package.json"), packageToWrite);
 
             logNewLine(installLogs, "✅ package.json successfully written to disk");
             progress.set(35);
             logNewLine(installLogs, "Writing asar to disk");
 
-            await actualOriginalFs.writeFile(path.join(await electron.ipcRenderer.invoke("getAppPath"), "VelocityDiscord/dist/velocity.asar"), asarToWrite);
+            await originalFs.writeFile(path.join(await electron.ipcRenderer.invoke("getAppPath"), "VelocityDiscord/dist/velocity.asar"), asarToWrite, { encoding: "binary" });
 
             logNewLine(installLogs, "✅ asar successfully written to disk");
             progress.set(45);
@@ -184,12 +179,15 @@ export async function startInstall() {
 
             logNewLine(installLogs, "Creating files in Discord folder...");
 
-            await fs.mkdir(path.join(window.appPath, "app"));
+            await fsPromises.mkdir(path.join(window.appPath, "app"));
             progress.set(50);
-            await fs.writeFile(path.join(window.appPath, "app/index.js"), `require("${VelocityDiscordPath}")`);
+            await fsPromises.writeFile(path.join(window.appPath, "app/index.js"), `require("${VelocityDiscordPath}")`);
             progress.set(55);
-            await fs.writeFile(path.join(window.appPath, "app/package.json"), `{"name":"velocity", "main":"./index.js"}`);
+            await fsPromises.writeFile(path.join(window.appPath, "app/package.json"), `{"name":"velocity", "main":"./index.js"}`);
             progress.set(60);
+
+            logNewLine(installLogs, "✅ files successfully created");
+            progress.set(80);
 
             finishInstall();
         } catch (err) {
