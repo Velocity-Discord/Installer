@@ -1,12 +1,7 @@
 
 (function(l, r) { if (!l || l.getElementById('livereloadscript')) return; r = l.createElement('script'); r.async = 1; r.src = '//' + (self.location.host || 'localhost').split(':')[0] + ':35729/livereload.js?snipver=1'; r.id = 'livereloadscript'; l.getElementsByTagName('head')[0].appendChild(r) })(self.document);
-var app = (function (fs$2, path$3) {
+var app = (function () {
     'use strict';
-
-    function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
-
-    var fs__default = /*#__PURE__*/_interopDefaultLegacy(fs$2);
-    var path__default = /*#__PURE__*/_interopDefaultLegacy(path$3);
 
     function noop() { }
     const identity = x => x;
@@ -803,16 +798,16 @@ var app = (function (fs$2, path$3) {
     			path = svg_element("path");
     			attr_dev(path, "tag", "path");
     			attr_dev(path, "d", "M 11.5,18.788687 C 9.2628645,14.634721 4.7885936,9.4422626 3.670026,9.4422626 c 3.3557031,-4.1539661 0,0 3.3557031,-4.1539661 0,3.1154747 2.2371354,4.1539661 4.4742709,7.2694405 2.237135,-3.1154744 4.474271,-4.1539658 4.474271,-7.2694405 3.355703,4.1539661 0,0 3.355703,4.1539661 -1.118568,0 -5.592839,5.1924584 -7.829974,9.3464244 m 0,-9.3464244 c 1.118568,-1.0384914 2.237135,-2.076983 3.355703,-5.1924577 L 13.737135,3.2113134 C 12.618568,6.326788 11.5,6.326788 11.5,7.3652796 11.5,6.326788 10.381432,6.326788 9.2628645,3.2113134 L 8.1442968,4.2498049 C 9.2628645,7.3652796 10.381432,8.4037712 11.5,9.4422626 Z");
-    			attr_dev(path, "class", "svelte-1hdefr7");
+    			attr_dev(path, "class", "svelte-1bmk0vs");
     			add_location(path, file$9, 13, 8, 391);
     			attr_dev(svg, "tag", "svg");
     			attr_dev(svg, "viewBox", "0 0 22 22");
     			attr_dev(svg, "width", "430");
-    			attr_dev(svg, "class", "hero-logo svelte-1hdefr7");
+    			attr_dev(svg, "class", "hero-logo svelte-1bmk0vs");
     			attr_dev(svg, "height", "430");
     			add_location(svg, file$9, 12, 4, 304);
     			attr_dev(div, "id", "Loader");
-    			attr_dev(div, "class", "svelte-1hdefr7");
+    			attr_dev(div, "class", "svelte-1bmk0vs");
     			add_location(div, file$9, 11, 0, 282);
     		},
     		l: function claim(nodes) {
@@ -956,25 +951,6 @@ var app = (function (fs$2, path$3) {
     		});
     	}
     }
-
-    const pathFile = path__default["default"].join(__dirname, 'path.txt');
-
-    function getElectronPath () {
-      let executablePath;
-      if (fs__default["default"].existsSync(pathFile)) {
-        executablePath = fs__default["default"].readFileSync(pathFile, 'utf-8');
-      }
-      if (process.env.ELECTRON_OVERRIDE_DIST_PATH) {
-        return path__default["default"].join(process.env.ELECTRON_OVERRIDE_DIST_PATH, executablePath || 'electron');
-      }
-      if (executablePath) {
-        return path__default["default"].join(__dirname, 'dist', executablePath);
-      } else {
-        throw new Error('Electron failed to install correctly, please delete node_modules/electron and try installing again');
-      }
-    }
-
-    var electron = getElectronPath();
 
     /**
      * @typedef {Object} WrappedComponent Object returned by the `wrap` method
@@ -2134,7 +2110,7 @@ var app = (function (fs$2, path$3) {
     		c: function create() {
     			style = element("style");
     			style.textContent = ".lookFill.small {\n            background: #c74545;\n        }";
-    			add_location(style, file$7, 23, 4, 724);
+    			add_location(style, file$7, 23, 4, 731);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, style, anchor);
@@ -2184,13 +2160,13 @@ var app = (function (fs$2, path$3) {
     			attr_dev(button0, "class", "lookVibrant small");
     			attr_dev(button0, "id", "backPage");
     			button0.disabled = button0_disabled_value = !/*$backward*/ ctx[0];
-    			add_location(button0, file$7, 18, 4, 479);
+    			add_location(button0, file$7, 18, 4, 486);
     			attr_dev(button1, "class", "lookFill small");
     			attr_dev(button1, "id", "nextPage");
     			button1.disabled = button1_disabled_value = !/*$forward*/ ctx[1];
-    			add_location(button1, file$7, 19, 1, 582);
+    			add_location(button1, file$7, 19, 1, 589);
     			attr_dev(footer, "class", "footer");
-    			add_location(footer, file$7, 17, 0, 451);
+    			add_location(footer, file$7, 17, 0, 458);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -2275,6 +2251,7 @@ var app = (function (fs$2, path$3) {
     	component_subscribe($$self, action, $$value => $$invalidate(2, $action = $$value));
     	let { $$slots: slots = {}, $$scope } = $$props;
     	validate_slots('Footer', slots, []);
+    	const electron = require("electron");
 
     	async function goNext() {
     		state.direction = 1;
@@ -2293,7 +2270,7 @@ var app = (function (fs$2, path$3) {
     	});
 
     	$$self.$capture_state = () => ({
-    		ipcRenderer: electron.ipcRenderer,
+    		electron,
     		push,
     		pop,
     		location: location$1,
@@ -4147,5 +4124,5 @@ var app = (function (fs$2, path$3) {
 
     return app;
 
-})(fs$2, path$3);
+})();
 //# sourceMappingURL=bundle.js.map

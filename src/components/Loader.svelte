@@ -20,15 +20,15 @@
 
 <style>
     :root {
-		--primary: #040404;
-		--secondary: #333333;
-		--tertiary: #2b2b2e;
-		--bgColor: #16133c;
-		--accent: #2d3aaf;
-		--accentGlow: #2f3dbb;
-		--linkAccent: #4653ce;
-		--text: rgb(204, 204, 204);
-	}
+        --primary: #040404;
+        --secondary: #333333;
+        --tertiary: #2b2b2e;
+        --bgColor: #16133c;
+        --accent: #5968eb;
+        --accentGlow: #2f3dbb;
+        --linkAccent: #5968eb;
+        --text: rgb(204, 204, 204);
+    }
 
     @keyframes mainLogo {
         from {
@@ -65,7 +65,7 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        background-color: var(--primary);
+        background-image: linear-gradient(10deg, #040404, #16133c);
     }
 
     #Loader svg {
