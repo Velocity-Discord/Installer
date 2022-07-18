@@ -40,6 +40,11 @@ ipcMain.handle("kill", async (e) => {
     app.quit();
 });
 
+ipcMain.handle("getIcon", async (e, a) => {
+    if (!a) return "../assets/Velocity.ico";
+    return app.getFileIcon(a);
+});
+
 ipcMain.handle("getpath", async () => {
     let d = await dialog.showOpenDialog({ properties: ["openDirectory", "treatPackageAsDirectory"] });
 

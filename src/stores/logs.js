@@ -11,5 +11,7 @@ export function logNewLine(type, entry) {
 }
 
 export function clearAllLogs(type) {
-    type.set([])
+    type.set([]);
 }
+
+export let abc = writable(false);

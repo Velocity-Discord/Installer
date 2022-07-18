@@ -78,6 +78,8 @@ button {
     transition: all 0.2s ease;
     color: rgb(165, 165, 165);
     cursor: pointer;
+    background-color: transparent;
+    border: none;
 }
 
 button.lookVibrant {

@@ -42,3 +42,10 @@ export async function getPath({ sprops }) {
 
     return appPath;
 }
+
+export async function openDialog() {
+    const d = await ipcRenderer.invoke("getpath");
+    if (d.canceled || !d.filePaths[0]) return;
+
+    return d.filePaths[0];
+}
