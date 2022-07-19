@@ -10,6 +10,7 @@
 	import {onMount} from "svelte";
 	import { forward, backward, next, location, action } from "../stores/locations"
 	import { savedPath, velocityPath } from "../stores/path"
+	import { actionType } from "../stores/action";
 
 	let appPath
 	let velocityDirPath
@@ -24,7 +25,7 @@
 
 	onMount(async () => {
 		forward.set(false)
-		backward.set(false)
+		backward.set(true)
 		location.set("/1")
 		action.set("Next")
 		next.set("/2")
@@ -65,8 +66,18 @@
 </script>
 
 <main in:pageSlide out:pageSlide="{{out: true}}">
-	<h1>Install Velocity</h1>
-
 	<PathSelector pathStore={savedPath} Title="Discord" {handleClick} {statusProps} ButtonLabel="Browse"/>
-	<PathSelector pathStore={velocityPath} Title="Velocity Folder" handleClick={handleClick1} statusProps={statusPropsDir} ButtonLabel="Browse"/>
+	{#if $actionType == 1}
+		<PathSelector pathStore={velocityPath} Title="Velocity Folder" handleClick={handleClick1} statusProps={statusPropsDir} ButtonLabel="Browse"/>
+	{/if}
 </main>
+
+<style>
+	main {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		height: 75%;
+	}
+</style>

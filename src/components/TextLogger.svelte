@@ -16,7 +16,7 @@
             {log}
             <br><br>
         {/each}
-        <div class="spacer"></div>
+        <br><br>
     <ProgressBar />
 </section>
 
@@ -35,10 +35,6 @@
         border-radius: 4px;
     }
 
-    .spacer {
-        height: 20px;
-    }
-
     ::-webkit-scrollbar {
     	width: 6px;
 	}
@@ -55,6 +51,7 @@
 <style>
     section {
         height: 290px !important;
+        border-radius: 4px 4px 0 0;
     }
 </style>
 {/if}

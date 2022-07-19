@@ -9,6 +9,16 @@ import { fileLogs, installLogs, logNewLine } from "../stores/logs";
 import { savedPath } from "../stores/path";
 import { progress, failed } from "../stores/progress";
 import { forward, backward, next, location, action } from "../stores/locations";
+import { actionType } from "../stores/action";
+
+let aType;
+
+actionType.subscribe((action) => {
+    aType = action;
+    console.log(action);
+});
+
+console.log({ aType, actionType });
 
 const sleep = (time) => new Promise((resolve) => setTimeout(resolve, time));
 
@@ -80,11 +90,38 @@ export async function startInstall() {
         action.set("Exit");
     }
 
+    function finishUninstall() {
+        logNewLine(installLogs, "✅ Velocity successfully uninstalled");
+        forward.set(true);
+        progress.set(100);
+        action.set("Exit");
+    }
+
     await waitUntil(() => window.appPath);
+
+    let oldInstall = fs.existsSync(path.join(window.appPath, "app"));
+
+    console.log(aType, aType == 2);
+    if (aType === 2) {
+        console.log("e");
+        if (oldInstall) {
+            console.log("a");
+            logNewLine(installLogs, "Velocity install found");
+            logNewLine(installLogs, "Removing old install...");
+            progress.set(60);
+
+            await fsPromises.unlink(path.join(window.appPath, "app/index.js"));
+            await fsPromises.unlink(path.join(window.appPath, "app/package.json"));
+            await fsPromises.rmdir(path.join(window.appPath, "app"));
+
+            logNewLine(installLogs, "✅ Old install successfully removed");
+            return finishUninstall();
+        }
+        return;
+    }
 
     logNewLine(installLogs, `\n\n Starting Install`);
 
-    let oldInstall = fs.existsSync(path.join(window.appPath, "app"));
     if (oldInstall) {
         try {
             logNewLine(installLogs, `Old Client Modification detected ${window.appPath}/app`);

@@ -12,9 +12,10 @@
         max-width: 90% !important;
         background: var(--linkAccent);
         position: absolute;
-        bottom: 0;
+        bottom: -5px;
         left: 0;
         margin-inline: 5%;
+        border-radius: 0 0 4px 4px;
     }
 
     .progress-bar[style="width: 100%;"] {
