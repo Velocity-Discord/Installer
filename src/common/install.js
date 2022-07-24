@@ -6,19 +6,23 @@ const https = require("https");
 const electron = require("electron");
 
 import { fileLogs, installLogs, logNewLine } from "../stores/logs";
-import { savedPath } from "../stores/path";
+import { savedPath, velocityPath } from "../stores/path";
 import { progress, failed } from "../stores/progress";
 import { forward, backward, next, location, action } from "../stores/locations";
 import { actionType } from "../stores/action";
 
 let aType;
+let vPath;
 
 actionType.subscribe((action) => {
     aType = action;
     console.log(action);
 });
 
-console.log({ aType, actionType });
+velocityPath.subscribe((path) => {
+    vPath = path;
+    console.log(path);
+});
 
 const sleep = (time) => new Promise((resolve) => setTimeout(resolve, time));
 
@@ -145,24 +149,24 @@ export async function startInstall() {
             progress.set(25);
             logNewLine(installLogs, "Writing package.json to disk");
 
-            if (!fs.existsSync(path.join(await electron.ipcRenderer.invoke("getAppPath"), "VelocityDiscord"))) {
-                await fsPromises.mkdir(path.join(await electron.ipcRenderer.invoke("getAppPath"), "VelocityDiscord"));
+            if (!fs.existsSync(vPath)) {
+                await fsPromises.mkdir(path.join(vPath));
             }
-            if (!fs.existsSync(path.join(await electron.ipcRenderer.invoke("getAppPath"), "VelocityDiscord", "dist"))) {
-                await fsPromises.mkdir(path.join(await electron.ipcRenderer.invoke("getAppPath"), "VelocityDiscord", "dist"));
+            if (!fs.existsSync(path.join(vPath, "dist"))) {
+                await fsPromises.mkdir(path.join(vPath, "dist"));
             }
-            await fsPromises.writeFile(path.join(await electron.ipcRenderer.invoke("getAppPath"), "VelocityDiscord/package.json"), packageToWrite);
+            await fsPromises.writeFile(path.join(vPath, "/package.json"), packageToWrite);
 
             logNewLine(installLogs, "✅ package.json successfully written to disk");
             progress.set(35);
             logNewLine(installLogs, "Writing asar to disk");
 
-            await originalFs.writeFile(path.join(await electron.ipcRenderer.invoke("getAppPath"), "VelocityDiscord/dist/velocity.asar"), await getAsarData());
+            await originalFs.writeFile(path.join(vPath, "/dist/velocity.asar"), await getAsarData());
 
             logNewLine(installLogs, "✅ asar successfully written to disk");
             progress.set(45);
 
-            const VelocityDiscordPath = path.join(await electron.ipcRenderer.invoke("getAppPath"), "VelocityDiscord");
+            const VelocityDiscordPath = path.join(vPath);
 
             logNewLine(installLogs, "Creating files in Discord folder...");
 
@@ -195,24 +199,24 @@ export async function startInstall() {
             progress.set(25);
             logNewLine(installLogs, "Writing package.json to disk");
 
-            if (!fs.existsSync(path.join(await electron.ipcRenderer.invoke("getAppPath"), "VelocityDiscord"))) {
-                await fsPromises.mkdir(path.join(await electron.ipcRenderer.invoke("getAppPath"), "VelocityDiscord"));
+            if (!fs.existsSync(path.join(vPath))) {
+                await fsPromises.mkdir(path.join(vPath));
             }
-            if (!fs.existsSync(path.join(await electron.ipcRenderer.invoke("getAppPath"), "VelocityDiscord", "dist"))) {
-                await fsPromises.mkdir(path.join(await electron.ipcRenderer.invoke("getAppPath"), "VelocityDiscord", "dist"));
+            if (!fs.existsSync(path.join(vPath, "dist"))) {
+                await fsPromises.mkdir(path.join(vPath, "dist"));
             }
-            await fsPromises.writeFile(path.join(await electron.ipcRenderer.invoke("getAppPath"), "VelocityDiscord/package.json"), packageToWrite);
+            await fsPromises.writeFile(path.join(vPath, "/package.json"), packageToWrite);
 
             logNewLine(installLogs, "✅ package.json successfully written to disk");
             progress.set(35);
             logNewLine(installLogs, "Writing asar to disk");
 
-            await originalFs.writeFile(path.join(await electron.ipcRenderer.invoke("getAppPath"), "VelocityDiscord/dist/velocity.asar"), asarToWrite, { encoding: "binary" });
+            await originalFs.writeFile(path.join(vPath, "/dist/velocity.asar"), asarToWrite, { encoding: "binary" });
 
             logNewLine(installLogs, "✅ asar successfully written to disk");
             progress.set(45);
 
-            const VelocityDiscordPath = path.join(await electron.ipcRenderer.invoke("getAppPath"), "VelocityDiscord");
+            const VelocityDiscordPath = path.join(vPath);
 
             logNewLine(installLogs, "Creating files in Discord folder...");
 
