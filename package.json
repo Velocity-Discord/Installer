@@ -13,7 +13,8 @@
         "svelte-dev": "rollup -c -w",
         "svelte-start": "sirv public",
         "dist-mac": "npx electron-builder -m",
-        "dist-win": "npx electron-builder --ia32 --x64 -w portable"
+        "dist-win": "npx electron-builder --ia32 --x64 -w portable",
+        "dist": "concurrently \"npm:dist-mac\" \"npm:dist-win\""
     },
     "keywords": [],
     "author": {
