@@ -1183,7 +1183,7 @@ var app = (function () {
     const { Error: Error_1, Object: Object_1, console: console_1$2 } = globals;
 
     // (251:0) {:else}
-    function create_else_block$1(ctx) {
+    function create_else_block$2(ctx) {
     	let switch_instance;
     	let switch_instance_anchor;
     	let current;
@@ -1268,7 +1268,7 @@ var app = (function () {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_else_block$1.name,
+    		id: create_else_block$2.name,
     		type: "else",
     		source: "(251:0) {:else}",
     		ctx
@@ -1278,7 +1278,7 @@ var app = (function () {
     }
 
     // (244:0) {#if componentParams}
-    function create_if_block$5(ctx) {
+    function create_if_block$6(ctx) {
     	let switch_instance;
     	let switch_instance_anchor;
     	let current;
@@ -1366,7 +1366,7 @@ var app = (function () {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_if_block$5.name,
+    		id: create_if_block$6.name,
     		type: "if",
     		source: "(244:0) {#if componentParams}",
     		ctx
@@ -1380,7 +1380,7 @@ var app = (function () {
     	let if_block;
     	let if_block_anchor;
     	let current;
-    	const if_block_creators = [create_if_block$5, create_else_block$1];
+    	const if_block_creators = [create_if_block$6, create_else_block$2];
     	const if_blocks = [];
 
     	function select_block_type(ctx, dirty) {
@@ -2111,7 +2111,7 @@ var app = (function () {
     const file$a = "src/components/Footer.svelte";
 
     // (23:0) {#if $action == "Exit"}
-    function create_if_block$4(ctx) {
+    function create_if_block$5(ctx) {
     	let style;
 
     	const block = {
@@ -2130,7 +2130,7 @@ var app = (function () {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_if_block$4.name,
+    		id: create_if_block$5.name,
     		type: "if",
     		source: "(23:0) {#if $action == \\\"Exit\\\"}",
     		ctx
@@ -2152,7 +2152,7 @@ var app = (function () {
     	let if_block_anchor;
     	let mounted;
     	let dispose;
-    	let if_block = /*$action*/ ctx[2] == "Exit" && create_if_block$4(ctx);
+    	let if_block = /*$action*/ ctx[2] == "Exit" && create_if_block$5(ctx);
 
     	const block = {
     		c: function create() {
@@ -2212,7 +2212,7 @@ var app = (function () {
 
     			if (/*$action*/ ctx[2] == "Exit") {
     				if (if_block) ; else {
-    					if_block = create_if_block$4(ctx);
+    					if_block = create_if_block$5(ctx);
     					if_block.c();
     					if_block.m(if_block_anchor.parentNode, if_block_anchor);
     				}
@@ -2489,7 +2489,7 @@ var app = (function () {
     }
 
     // (29:0) {:else}
-    function create_else_block(ctx) {
+    function create_else_block$1(ctx) {
     	let label;
     	let input;
     	let t;
@@ -2542,7 +2542,7 @@ var app = (function () {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_else_block.name,
+    		id: create_else_block$1.name,
     		type: "else",
     		source: "(29:0) {:else}",
     		ctx
@@ -2552,7 +2552,7 @@ var app = (function () {
     }
 
     // (24:0) {#if $actionType == 2}
-    function create_if_block$3(ctx) {
+    function create_if_block$4(ctx) {
     	let label;
     	let input;
     	let t;
@@ -2606,7 +2606,7 @@ var app = (function () {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_if_block$3.name,
+    		id: create_if_block$4.name,
     		type: "if",
     		source: "(24:0) {#if $actionType == 2}",
     		ctx
@@ -2628,8 +2628,8 @@ var app = (function () {
     	let if_block0 = current_block_type(ctx);
 
     	function select_block_type_1(ctx, dirty) {
-    		if (/*$actionType*/ ctx[0] == 2) return create_if_block$3;
-    		return create_else_block;
+    		if (/*$actionType*/ ctx[0] == 2) return create_if_block$4;
+    		return create_else_block$1;
     	}
 
     	let current_block_type_1 = select_block_type_1(ctx);
@@ -3384,7 +3384,7 @@ var app = (function () {
     const file$5 = "src/pages/1.svelte";
 
     // (70:1) {#if $actionType == 1}
-    function create_if_block$2(ctx) {
+    function create_if_block$3(ctx) {
     	let pathselector;
     	let current;
 
@@ -3424,7 +3424,7 @@ var app = (function () {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_if_block$2.name,
+    		id: create_if_block$3.name,
     		type: "if",
     		source: "(70:1) {#if $actionType == 1}",
     		ctx
@@ -3452,7 +3452,7 @@ var app = (function () {
     			$$inline: true
     		});
 
-    	let if_block = /*$actionType*/ ctx[1] == 1 && create_if_block$2(ctx);
+    	let if_block = /*$actionType*/ ctx[1] == 1 && create_if_block$3(ctx);
 
     	const block = {
     		c: function create() {
@@ -3486,7 +3486,7 @@ var app = (function () {
     						transition_in(if_block, 1);
     					}
     				} else {
-    					if_block = create_if_block$2(ctx);
+    					if_block = create_if_block$3(ctx);
     					if_block.c();
     					transition_in(if_block, 1);
     					if_block.m(main, null);
@@ -3975,7 +3975,7 @@ var app = (function () {
     const file$3 = "src/components/ProgressBar.svelte";
 
     // (26:0) {#if $failed}
-    function create_if_block$1(ctx) {
+    function create_if_block$2(ctx) {
     	let style;
 
     	const block = {
@@ -3994,7 +3994,7 @@ var app = (function () {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_if_block$1.name,
+    		id: create_if_block$2.name,
     		type: "if",
     		source: "(26:0) {#if $failed}",
     		ctx
@@ -4007,7 +4007,7 @@ var app = (function () {
     	let div;
     	let t;
     	let if_block_anchor;
-    	let if_block = /*$failed*/ ctx[1] && create_if_block$1(ctx);
+    	let if_block = /*$failed*/ ctx[1] && create_if_block$2(ctx);
 
     	const block = {
     		c: function create() {
@@ -4035,7 +4035,7 @@ var app = (function () {
 
     			if (/*$failed*/ ctx[1]) {
     				if (if_block) ; else {
-    					if_block = create_if_block$1(ctx);
+    					if_block = create_if_block$2(ctx);
     					if_block.c();
     					if_block.m(if_block_anchor.parentNode, if_block_anchor);
     				}
@@ -4155,7 +4155,7 @@ var app = (function () {
     }
 
     // (50:0) {#if full}
-    function create_if_block(ctx) {
+    function create_if_block$1(ctx) {
     	let style;
 
     	const block = {
@@ -4175,7 +4175,7 @@ var app = (function () {
 
     	dispatch_dev("SvelteRegisterBlock", {
     		block,
-    		id: create_if_block.name,
+    		id: create_if_block$1.name,
     		type: "if",
     		source: "(50:0) {#if full}",
     		ctx
@@ -4209,7 +4209,7 @@ var app = (function () {
     	}
 
     	progressbar = new ProgressBar({ $$inline: true });
-    	let if_block = /*full*/ ctx[2] && create_if_block(ctx);
+    	let if_block = /*full*/ ctx[2] && create_if_block$1(ctx);
 
     	const block = {
     		c: function create() {
@@ -4301,7 +4301,7 @@ var app = (function () {
 
     			if (/*full*/ ctx[2]) {
     				if (if_block) ; else {
-    					if_block = create_if_block(ctx);
+    					if_block = create_if_block$1(ctx);
     					if_block.c();
     					if_block.m(if_block_anchor.parentNode, if_block_anchor);
     				}
@@ -4569,26 +4569,92 @@ var app = (function () {
     /* src/pages/3.svelte generated by Svelte v3.49.0 */
     const file$1 = "src/pages/3.svelte";
 
+    // (19:73) {:else}
+    function create_else_block(ctx) {
+    	let t;
+
+    	const block = {
+    		c: function create() {
+    			t = text("Uninstall");
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, t, anchor);
+    		},
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(t);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_else_block.name,
+    		type: "else",
+    		source: "(19:73) {:else}",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (19:42) {#if $actionType == 2}
+    function create_if_block(ctx) {
+    	let t;
+
+    	const block = {
+    		c: function create() {
+    			t = text("Install");
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, t, anchor);
+    		},
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(t);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_if_block.name,
+    		type: "if",
+    		source: "(19:42) {#if $actionType == 2}",
+    		ctx
+    	});
+
+    	return block;
+    }
+
     function create_fragment$3(ctx) {
     	let main;
     	let p;
+    	let t0;
     	let t1;
+    	let t2;
     	let filedisplay;
     	let main_intro;
     	let main_outro;
     	let current;
+
+    	function select_block_type(ctx, dirty) {
+    		if (/*$actionType*/ ctx[0] == 2) return create_if_block;
+    		return create_else_block;
+    	}
+
+    	let current_block_type = select_block_type(ctx);
+    	let if_block = current_block_type(ctx);
     	filedisplay = new FileDisplay({ $$inline: true });
 
     	const block = {
     		c: function create() {
     			main = element("main");
     			p = element("p");
-    			p.textContent = "Are you sure you want to Install Velocity?";
-    			t1 = space();
+    			t0 = text("Are you sure you want to ");
+    			if_block.c();
+    			t1 = text(" Velocity?");
+    			t2 = space();
     			create_component(filedisplay.$$.fragment);
     			attr_dev(p, "class", "head svelte-xcnuy1");
-    			add_location(p, file$1, 17, 1, 467);
-    			add_location(main, file$1, 16, 0, 416);
+    			add_location(p, file$1, 18, 1, 548);
+    			add_location(main, file$1, 17, 0, 497);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -4596,11 +4662,24 @@ var app = (function () {
     		m: function mount(target, anchor) {
     			insert_dev(target, main, anchor);
     			append_dev(main, p);
-    			append_dev(main, t1);
+    			append_dev(p, t0);
+    			if_block.m(p, null);
+    			append_dev(p, t1);
+    			append_dev(main, t2);
     			mount_component(filedisplay, main, null);
     			current = true;
     		},
-    		p: noop,
+    		p: function update(ctx, [dirty]) {
+    			if (current_block_type !== (current_block_type = select_block_type(ctx))) {
+    				if_block.d(1);
+    				if_block = current_block_type(ctx);
+
+    				if (if_block) {
+    					if_block.c();
+    					if_block.m(p, t1);
+    				}
+    			}
+    		},
     		i: function intro(local) {
     			if (current) return;
     			transition_in(filedisplay.$$.fragment, local);
@@ -4621,6 +4700,7 @@ var app = (function () {
     		},
     		d: function destroy(detaching) {
     			if (detaching) detach_dev(main);
+    			if_block.d();
     			destroy_component(filedisplay);
     			if (detaching && main_outro) main_outro.end();
     		}
@@ -4638,13 +4718,16 @@ var app = (function () {
     }
 
     function instance$3($$self, $$props, $$invalidate) {
+    	let $actionType;
+    	validate_store(actionType, 'actionType');
+    	component_subscribe($$self, actionType, $$value => $$invalidate(0, $actionType = $$value));
     	let { $$slots: slots = {}, $$scope } = $$props;
     	validate_slots('_3', slots, []);
 
     	onMount(() => {
     		forward.set(true);
     		backward.set(true);
-    		action.set("Install");
+    		action.set($actionType == 2 ? "Install" : "Uninstall");
     		location.set("/3");
     		next.set("/4");
     	});
@@ -4664,10 +4747,12 @@ var app = (function () {
     		next,
     		location,
     		action,
-    		savedPath
+    		savedPath,
+    		actionType,
+    		$actionType
     	});
 
-    	return [];
+    	return [$actionType];
     }
 
     class _3 extends SvelteComponentDev {
